@@ -5,21 +5,24 @@ class Args(object):
     ARG_CFGS = []
 
     def __init__(self, description=None):
-        self.description = description
-        self.parser = argparse.ArgumentParser(description=self.description)
-        self.args = None
-        self.dict = {}
+        self._parser = argparse.ArgumentParser(description)
+        self._args = None
+        self._dict = {}
 
     def parse(self, args=None):
         for item in self.ARG_CFGS:
             name = item.pop('name')
-            self.parser.add_argument(name, **item)
-            self.args = self.parser.parse_args(args)
-            self.dict = self.args.__dict__
+            self._parser.add_argument(name, **item)
+            self._args = self._parser.parse_args(args)
+            self._dict = self._args.__dict__
         return self
 
+    @property
+    def dict(self):
+        return self._dict
+
     def __getitem__(self, name):
-        return self.dict[name]
+        return self._dict[name]
 
     @classmethod
     def reset(cls):
@@ -30,7 +33,7 @@ class Args(object):
         if '--' in name:
             return name
         if '-' in name:
-            raise NameError(f'Invalid name {name}.')
+            raise NameError(f'Invalid name [{name}].')
         return f'--{name}'
 
     @classmethod
