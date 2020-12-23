@@ -37,6 +37,21 @@ class Args(object):
         return f'--{name}'
 
     @classmethod
+    def add_with_dict(cls, data):
+        for k, v in data.items():
+            help = f'arg for {k}'
+            if isinstance(v, int):
+                cls.add_int(k, help, default=v)
+            elif isinstance(v, float):
+                cls.add_float(k, help, default=v)
+            elif isinstance(v, bool):
+                cls.add_bool(k, help, default=v)
+            elif isinstance(v, str):
+                cls.add_string(k, help, default=v)
+            elif isinstance(v, list):
+                cls.add_list(k, help, v[0].__class__, default=v)
+
+    @classmethod
     def add_bool(cls, name, help, default=None, required=False):
         if default is True:
             action = 'store_true'

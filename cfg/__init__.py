@@ -4,13 +4,16 @@ from .argparser import Args
 
 
 class Opts(Args):
-    def __init__(self, cfg_file=None, description=None):
-        super().__init__(description)
-        self.parse()
+    def __init__(self, cfg_file=None, description=None, _parse_data=None):
         if cfg_file is not None:
-            self._cfg = YAMLLoader(cfg_file)
+            self._cfg = YAMLLoader(cfg_file).cfg
         else:
             self._cfg = {}
+        self.add_with_dict(self._cfg)
+        super().__init__(description)
+        # _parse_data just for test
+        self.parse(_parse_data)
+
         self._cfg.update(self.dict)
         self.set_attr()
 

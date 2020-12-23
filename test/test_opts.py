@@ -58,11 +58,27 @@ def remove_yaml_file():
 
 
 def test_opts_load_yaml():
+    Opts.reset()
     try:
         data = {'name': 'linux'}
         create_yaml_file(data)
         opt = Opts(yaml_file)
         assert opt['name'] == data['name']
+    except Exception as e:
+        raise e
+    #======================
+    finally:
+        remove_yaml_file()
+
+
+def test_yaml_to_arg():
+    Opts.reset()
+    try:
+        data = {'name': 'linux'}
+        create_yaml_file(data)
+        opt = Opts(yaml_file, _parse_data='--name unix'.split(' '))
+
+        assert opt['name'] == 'unix'
     except Exception as e:
         raise e
     #======================
