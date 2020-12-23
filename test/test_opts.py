@@ -1,3 +1,4 @@
+import os
 from yaml import dump
 from cfg import Opts
 
@@ -34,3 +35,36 @@ def test_default_args():
 
     for k in data1.keys():
         assert data1[k] == opt[k]
+
+# ======================================
+
+yaml_file = 'yaml_test.yaml'
+
+
+def create_yaml_file(data, file=None):
+    with open(file or yaml_file, 'w') as f:
+        for k, v in data.items():
+            if not isinstance(v, list):
+                f.write(f'{k}: {v}\n')
+            else:
+                f.write(f'{k}:\n')
+                for item in v:
+                    f.write(f'  - {item}\n')
+    
+
+def remove_yaml_file():
+    if os.path.exists(yaml_file):
+        os.remove(yaml_file)
+
+
+def test_opts_load_yaml():
+    try:
+        data = {'name': 'linux'}
+        create_yaml_file(data)
+        opt = Opts(yaml_file)
+        assert opt['name'] == data['name']
+    except Exception as e:
+        raise e
+    #======================
+    finally:
+        remove_yaml_file()
