@@ -14,7 +14,7 @@ dep: $(REQUIREMENTS)
 add:
 	git add -A
 
-commit: .git
+commit: .git add
 	# Not Recommended
 	git add -A
 	git commit -m 'Update project'
