@@ -11,9 +11,11 @@ dep: $(REQUIREMENTS)
 	$(PIP) install -r $<
 
 
-commit:
-	# Not Recommended
+add:
 	git add -A
+
+commit: add .git
+	# Not Recommended
 	git commit -m 'Update project'
 
 
