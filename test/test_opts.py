@@ -26,15 +26,20 @@ def test_default_args():
         assert data1[k] == data2[k]
 
     # =================
-    dumped_yaml_file = 'dumped_yaml_file.yaml'
+    try:
+        dumped_yaml_file = 'dumped_yaml_file.yaml'
 
-    opt.dump(dumped_yaml_file)
-    opt._cfg = {}
-    assert not opt._cfg
-    opt.load(dumped_yaml_file)
+        opt.dump(dumped_yaml_file)
+        opt._cfg = {}
+        assert not opt._cfg
+        opt.load(dumped_yaml_file)
 
-    for k in data1.keys():
-        assert data1[k] == opt[k]
+        for k in data1.keys():
+            assert data1[k] == opt[k]
+    except Exception as e:
+        raise e
+    finally:
+        remove_yaml_file(dumped_yaml_file)
 
 # ======================================
 
@@ -52,9 +57,9 @@ def create_yaml_file(data, file=None):
                     f.write(f'  - {item}\n')
     
 
-def remove_yaml_file():
-    if os.path.exists(yaml_file):
-        os.remove(yaml_file)
+def remove_yaml_file(file=None):
+    if os.path.exists(file or yaml_file):
+        os.remove(file or yaml_file)
 
 
 def test_opts_load_yaml():
