@@ -1,5 +1,6 @@
-REQUIREMENTS		:= requirements.txt
-PIP					:= pip
+REQUIREMENTS   := requirements.txt
+PIP            := pip
+
 
 .PHONY: all dep push
 

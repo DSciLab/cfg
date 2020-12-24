@@ -89,3 +89,27 @@ def test_yaml_to_arg():
     #======================
     finally:
         remove_yaml_file()
+
+
+def test_arg_list():
+    Opts.reset()
+
+    lst = [1, 2, 3]
+    Opts.add_list_int('a', 'a list', lst)
+    opt = Opts()
+    for item in lst:
+        assert item in opt.a
+    for item in opt.a:
+        assert item in lst
+
+    # ============================
+    Opts.reset()
+    lst = [1, 2, 3]
+    lst2 = [4, 5, 6]
+    Opts.add_list_int('a', 'a list', lst)
+    parse_data = f"--a {' '.join(str(i) for i in lst2)}".split(' ')
+    opt = Opts(_parse_data=parse_data)
+    for item in lst2:
+        assert item in opt.a
+    for item in opt.a:
+        assert item in lst2
