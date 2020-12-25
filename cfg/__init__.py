@@ -1,3 +1,4 @@
+import datetime
 import yaml
 from .yaml_loader import YAMLLoader
 from .argparser import Args
@@ -15,7 +16,13 @@ class Opts(Args):
         self.parse(_parse_data)
 
         self._cfg.update(self.dict)
+        self.post_config()
         self.set_attr()
+
+    def post_config(self):
+        if 'id' not in self._cfg:
+            d = datetime.datetime.now()
+            self._cfg['id'] = d.strftime('%Y%M%d_%H%M%S')
 
     def get(self, key, default=None):
         return self._cfg.get(key, default)
