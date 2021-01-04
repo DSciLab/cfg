@@ -13,8 +13,8 @@ class Args(object):
         for item in self.ARG_CFGS:
             name = item.pop('name')
             self._parser.add_argument(name, **item)
-            self._args = self._parser.parse_args(args)
-            self._dict = self._args.__dict__
+        self._args = self._parser.parse_args(args)
+        self._dict = self._args.__dict__
         return self
 
     @property
@@ -54,17 +54,9 @@ class Args(object):
     @classmethod
     def add_bool(cls, name, default=None, help=None, required=False):
         help = help or f'{name}: bool'
-        if default is True:
-            action = 'store_true'
-        elif default is False:
-            action = 'store_false'
-        else:
-            raise ValueError('True or False are required.')
-
         item = {'name': cls.ext_name(name),
                 'help': help,
                 'default': default,
-                'action': action,
                 'type': bool,
                 'required': required}
         cls.ARG_CFGS.append(item)

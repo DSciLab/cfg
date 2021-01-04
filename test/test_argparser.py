@@ -29,3 +29,9 @@ def test_arg_int():
         pass
     else:
         assert False
+
+    Args.reset()
+    Args.add_bool(name, False, help)
+    print(Args.ARG_CFGS)
+    arg = Args().parse('--arg_name true'.split(' '))
+    assert arg[name] == True

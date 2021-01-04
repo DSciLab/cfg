@@ -13,7 +13,7 @@ dep: $(REQUIREMENTS)
 	$(PIP) install -r $<
 
 
-commit: .git clean
+commit: clean
 	# Not Recommended
 	git pull
 	git add -A
