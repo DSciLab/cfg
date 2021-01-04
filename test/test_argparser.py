@@ -6,7 +6,7 @@ def test_arg_int():
     help = 'arg_help'
     default = 100
 
-    Args.add_int(name, help, default)
+    Args.add_int(name, default, help)
     arg = Args().parse()
     assert arg[name] == default
 
@@ -15,13 +15,13 @@ def test_arg_int():
     default = 100
 
     Args.reset()
-    Args.add_int(name, help, default)
+    Args.add_int(name, default, help)
     print(Args.ARG_CFGS)
     arg = Args().parse('--arg_name 200'.split(' '))
     assert arg[name] == 200
 
     Args.reset()
-    Args.add_int(name, help, default)
+    Args.add_int(name, default, help)
     print(Args.ARG_CFGS)
     try:
         arg = Args().parse('--arg_name 20.3'.split(' '))

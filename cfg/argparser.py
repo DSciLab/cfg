@@ -41,18 +41,19 @@ class Args(object):
         for k, v in data.items():
             help = f'arg for {k}'
             if isinstance(v, int):
-                cls.add_int(k, help, default=v)
+                cls.add_int(k, help=help, default=v)
             elif isinstance(v, float):
-                cls.add_float(k, help, default=v)
+                cls.add_float(k, help=help, default=v)
             elif isinstance(v, bool):
-                cls.add_bool(k, help, default=v)
+                cls.add_bool(k, help=help, default=v)
             elif isinstance(v, str):
-                cls.add_string(k, help, default=v)
+                cls.add_string(k, help=help, default=v)
             elif isinstance(v, list):
-                cls.add_list(k, help, v[0].__class__, default=v)
+                cls.add_list(k, v[0].__class__, default=v, help=help)
 
     @classmethod
-    def add_bool(cls, name, help, default=None, required=False):
+    def add_bool(cls, name, default=None, help=None, required=False):
+        help = help or f'{name}: bool'
         if default is True:
             action = 'store_true'
         elif default is False:
@@ -69,7 +70,8 @@ class Args(object):
         cls.ARG_CFGS.append(item)
 
     @classmethod
-    def add_int(cls, name, help, default=None, required=False):
+    def add_int(cls, name, default=None, help=None, required=False):
+        help = help or f'{name}: int'
         item = {'name': cls.ext_name(name),
                 'help': help,
                 'default': default,
@@ -78,7 +80,8 @@ class Args(object):
         cls.ARG_CFGS.append(item)
 
     @classmethod
-    def add_float(cls, name, help, default=None, required=False):
+    def add_float(cls, name, default=None, help=None , required=False):
+        help = help or f'{name}: float'
         item = {'name': cls.ext_name(name),
                 'help': help,
                 'default': default,
@@ -87,7 +90,8 @@ class Args(object):
         cls.ARG_CFGS.append(item)
 
     @classmethod
-    def add_string(cls, name, help, default=None, required=False):
+    def add_string(cls, name, default=None, help=None, required=False):
+        help = help or f'{name}: str'
         item = {'name': cls.ext_name(name),
                 'help': help,
                 'default': default,
@@ -96,7 +100,8 @@ class Args(object):
         cls.ARG_CFGS.append(item)
     
     @classmethod
-    def add_list_int(cls, name, help, default=None, required=False):
+    def add_list_int(cls, name, default=None, help=None, required=False):
+        help = help or f'{name}: [*int]'
         item = {'name': cls.ext_name(name),
                 'help': help,
                 'default': default,
@@ -106,7 +111,8 @@ class Args(object):
         cls.ARG_CFGS.append(item)
 
     @classmethod
-    def add_list_float(cls, name, help, default=None, required=False):
+    def add_list_float(cls, name, default=None, help=None, required=False):
+        help = help or f'{name}: [*float]'
         item = {'name': cls.ext_name(name),
                 'help': help,
                 'default': default,
@@ -116,7 +122,8 @@ class Args(object):
         cls.ARG_CFGS.append(item)
 
     @classmethod
-    def add_list_string(cls, name, help, default=None, required=False):
+    def add_list_string(cls, name, default=None, help=None, required=False):
+        help = help or f'{name}: [*str]'
         item = {'name': cls.ext_name(name),
                 'help': help,
                 'default': default,
@@ -126,7 +133,8 @@ class Args(object):
         cls.ARG_CFGS.append(item)
 
     @classmethod
-    def add_list(cls, name, help, type, default=None, required=False):
+    def add_list(cls, name, type, default=None, help=None, required=False):
+        help = help or f'{name}: {type}'
         if type is int:
             cls.arg_list_int(name=name, help=help,
                              default=default, required=required)

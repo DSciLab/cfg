@@ -5,7 +5,7 @@ from cfg import Opts
 
 def test_default_args():
     Opts.reset()
-    Opts.add_int('a', 'a value', 1)
+    Opts.add_int('a', 1, 'a value')
 
     opt = Opts()
     assert opt.a == 1
@@ -95,7 +95,7 @@ def test_arg_list():
     Opts.reset()
 
     lst = [1, 2, 3]
-    Opts.add_list_int('a', 'a list', lst)
+    Opts.add_list_int('a', lst, 'a list')
     opt = Opts()
     for item in lst:
         assert item in opt.a
@@ -106,7 +106,7 @@ def test_arg_list():
     Opts.reset()
     lst = [1, 2, 3]
     lst2 = [4, 5, 6]
-    Opts.add_list_int('a', 'a list', lst)
+    Opts.add_list_int('a', lst, 'a list')
     parse_data = f"--a {' '.join(str(i) for i in lst2)}".split(' ')
     opt = Opts(_parse_data=parse_data)
     for item in lst2:
