@@ -1,8 +1,31 @@
 import argparse
+from collections import defaultdict
+
+
+class CFGPool(object):
+    def __init__(self):
+        self._dict = defaultdict(lambda: None)
+    
+    def regist(self, key, value, cfg_path):
+        if self._dict[key] is None:
+            self._dict[key] = {value: cfg_path}
+        else:
+            self._dict[key][value] = cfg_path
+
+    def query(self, key, value) -> str:
+        if not key in self._dict.keys():
+            return None
+        else:
+            try:
+                return self._dict[key][value]
+            except KeyError:
+                raise RuntimeError(
+                    f'Excepct {value} in {key} cfg pool.')
 
 
 class Args(object):
     ARG_CFGS = []
+    CFG_POOL = CFGPool()
 
     def __init__(self, description=None):
         self._parser = argparse.ArgumentParser(description)
@@ -50,6 +73,10 @@ class Args(object):
                 cls.add_string(k, help=help, default=v)
             elif isinstance(v, list):
                 cls.add_list(k, v[0].__class__, default=v, help=help)
+
+    @classmethod
+    def add_yml(cls, key, value, cfg_path):
+        cls.CFG_POOL.regist(key, value, cfg_path)
 
     @classmethod
     def add_bool(cls, name, default=None, help=None, required=False):

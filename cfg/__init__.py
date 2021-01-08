@@ -16,8 +16,21 @@ class Opts(Args):
         self.parse(_parse_data)
 
         self._cfg.update(self.dict)
+        self.try_load_registered_yml()
         self.post_config()
         self.set_attr()
+
+    def try_load_registered_yml(self):
+        _cfg = None
+        for key, value in self._cfg.items():
+            cfg_path = self.CFG_POOL.query(key, value)
+            if cfg_path is not None:
+                sub_cfg = YAMLLoader(cfg_path).cfg
+                if _cfg is None:
+                    _cfg = sub_cfg
+                else:
+                    _cfg.update(sub_cfg)
+        self._cfg.update(_cfg)
 
     def post_config(self):
         if 'id' not in self._cfg:
