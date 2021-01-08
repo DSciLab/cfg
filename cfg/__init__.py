@@ -35,7 +35,7 @@ class Opts(Args):
     def post_config(self):
         if 'id' not in self._cfg:
             d = datetime.datetime.now()
-            self._cfg['id'] = d.strftime('%Y%M%d_%H%M%S')
+            self._cfg['id'] = d.strftime('%Y%m%d_%H%M%S')
 
     def get(self, key, default=None):
         return self._cfg.get(key, default)
@@ -68,14 +68,15 @@ class Opts(Args):
             data = self.dumps()
             yaml.dump(data, f)
 
-    def load(self, file_path):
+    def load(self, file_path, update=True):
         with open(file_path, 'r') as f:
             cfg = yaml.load(f, yaml.FullLoader)
-        self.loads(cfg, update=False)
+        self.loads(cfg, update)
 
     def loads(self, cfg, update=False):
         if update:
-            self._cfg.update(cfg)
+            cfg.update(self._cfg)
+            self._cfg = cfg
         else:
             self._cfg = cfg
         self.set_attr()
