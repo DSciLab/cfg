@@ -30,7 +30,8 @@ class Opts(Args):
                     _cfg = sub_cfg
                 else:
                     _cfg.update(sub_cfg)
-        self._cfg.update(_cfg)
+        if _cfg is not None:
+            self._cfg.update(_cfg)
 
     def post_config(self):
         if 'id' not in self._cfg:
