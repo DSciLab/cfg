@@ -78,7 +78,9 @@ class Args(object):
     def add_yml(cls, key, value, cfg_path):
         cls.CFG_POOL.regist(key, value, cfg_path)
 
-    add_yaml = add_yml
+    @classmethod
+    def add_yaml(cls, key, value, cfg_path):
+        cls.add_yml(key, value, cfg_path)
 
     @classmethod
     def add_bool(cls, name, default=None, help=None, required=False):
