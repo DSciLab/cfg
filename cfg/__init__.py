@@ -55,7 +55,11 @@ class Opts(Args):
             group_name = self.snake_to_camel(self.GROUP_NAME)
             self._cfg['id'] = f'{group_name}_{date_str}'
 
-    def get(self, key, default=None):
+    def get(self, key, default=None, warn=False):
+        undefined = self._cfg.get(key, None) is None
+        if undefined and warn:
+            print(f'[Opts Warn] {key} undefined, '
+                   'use default value.')
         return self._cfg.get(key, default)
 
     def set(self, key, value):
