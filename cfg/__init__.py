@@ -1,4 +1,5 @@
 import datetime
+import inspect
 import yaml
 from .yaml_loader import YAMLLoader
 from .argparser import Args
@@ -6,6 +7,12 @@ from .argparser import Args
 
 class Opts(Args):
     def __init__(self, cfg_file=None, description=None, _parse_data=None):
+        if self.GROUP_NAME is None:
+            filename = inspect.stack()[1].filename
+            filename = filename.split('/')[-1]
+            group_name = filename.split('.')[0]
+            self.GROUP_NAME = group_name
+        
         if cfg_file is not None:
             self._cfg = YAMLLoader(cfg_file).cfg
         else:
@@ -33,10 +40,19 @@ class Opts(Args):
         if _cfg is not None:
             self._cfg.update(_cfg)
 
+    @staticmethod
+    def snake_to_camel(snake):
+        splited_snake = snake.split('_')
+        splited_camel = [word.capitalize() for word in splited_snake]
+        camel = ''.join(splited_camel)
+        return camel
+
     def post_config(self):
         if 'id' not in self._cfg:
             d = datetime.datetime.now()
-            self._cfg['id'] = d.strftime('%Y%m%d_%H%M%S')
+            date_str = d.strftime('%Y%m%d_%H%M%S')
+            group_name = self.snake_to_camel(self.GROUP_NAME)
+            self._cfg['id'] = f'{group_name}_{date_str}'
 
     def get(self, key, default=None):
         return self._cfg.get(key, default)

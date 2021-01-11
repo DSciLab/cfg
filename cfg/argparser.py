@@ -26,6 +26,7 @@ class CFGPool(object):
 class Args(object):
     ARG_CFGS = []
     CFG_POOL = CFGPool()
+    GROUP_NAME = None
 
     def __init__(self, description=None):
         self._parser = argparse.ArgumentParser(description)
@@ -73,6 +74,10 @@ class Args(object):
                 cls.add_string(k, help=help, default=v)
             elif isinstance(v, list):
                 cls.add_list(k, v[0].__class__, default=v, help=help)
+
+    @classmethod
+    def add_group(cls, group_name):
+        cls.GROUP_NAME = group_name
 
     @classmethod
     def add_yml(cls, key, value, cfg_path):
