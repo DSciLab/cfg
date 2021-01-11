@@ -38,7 +38,8 @@ class Opts(Args):
                 else:
                     _cfg.update(sub_cfg)
         if _cfg is not None:
-            self._cfg.update(_cfg)
+            _cfg.update(self._cfg)
+            self._cfg = _cfg
 
     @staticmethod
     def snake_to_camel(snake):
@@ -97,3 +98,11 @@ class Opts(Args):
         else:
             self._cfg = cfg
         self.set_attr()
+
+    def perfect(self):
+        cfg = self.dumps()
+        string = ''
+        for key, val in cfg.items():
+            string += f'{key}: {val}\n'
+
+        return string
