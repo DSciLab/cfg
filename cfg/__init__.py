@@ -59,7 +59,7 @@ class Opts(Args):
         undefined = self._cfg.get(key, None) is None
         if undefined and warn:
             print(f'[Opts Warn] {key} undefined, '
-                   'use default value.')
+                   f'use default value ({default}).')
         return self._cfg.get(key, default)
 
     def set(self, key, value):
