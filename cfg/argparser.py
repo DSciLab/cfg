@@ -1,3 +1,4 @@
+import copy
 import argparse
 from collections import defaultdict
 
@@ -25,6 +26,7 @@ class CFGPool(object):
 
 class Args(object):
     ARG_CFGS = []
+    ARG_SETED = []
     CFG_POOL = CFGPool()
     GROUP_NAME = None
 
@@ -35,8 +37,13 @@ class Args(object):
 
     def parse(self, args=None):
         for item in self.ARG_CFGS:
-            name = item.pop('name')
-            self._parser.add_argument(name, **item)
+            kwargs = copy.deepcopy(item)
+            name = kwargs.pop('name')
+            try:
+                self._parser.add_argument(name, **kwargs)
+            except argparse.ArgumentError as _:
+                continue
+            self.ARG_SETED.append(name)
         self._args = self._parser.parse_args(args)
         self._dict = self._args.__dict__
         return self

@@ -51,7 +51,8 @@ class YAMLLoader(object):
             file = self.auto_file_ext(self.file_path, file)
             file = self.get_relative_path(self.file_path, file)
             sub_cfgs = self.load_yaml(file)
-            self.cfg.update(sub_cfgs)
+            sub_cfgs.update(self.cfg)
+            self.cfg = sub_cfgs
 
     def __getitem__(self, key):
         return self.cfg[key]
