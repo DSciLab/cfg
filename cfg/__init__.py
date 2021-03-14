@@ -7,11 +7,13 @@ from .argparser import Args
 
 class Opts(Args):
     def __init__(self, cfg_file=None, description=None, _parse_data=None):
+        filename = inspect.stack()[1].filename
         if self.GROUP_NAME is None:
-            filename = inspect.stack()[1].filename
             filename = filename.split('/')[-1]
             group_name = filename.split('.')[0]
             self.GROUP_NAME = group_name
+        if '.py' not in filename and _parse_data is None:
+            _parse_data = ''
         
         if cfg_file is not None:
             self._cfg = YAMLLoader(cfg_file).cfg
