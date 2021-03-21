@@ -123,12 +123,12 @@ def test_import_cfg():
 
         # ==============================
         main_data = {'import': sub_yaml_file, 'a': 1}
-        sub_data = {'a': 2}
+        sub_data = {'b': 2}
         create_yaml_file(main_data, yaml_file)
         create_yaml_file(sub_data, sub_yaml_file)
 
         yaml_loader = YAMLLoader(yaml_file)
-        assert yaml_loader['a'] == sub_data['a']
+        assert yaml_loader['b'] == sub_data['b']
 
     # =====================
     except Exception as e:

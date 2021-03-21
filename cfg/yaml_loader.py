@@ -7,11 +7,12 @@ class YAMLLoader(object):
         self.file_path = file_path
         with open(file_path, 'r') as f:
             self.cfg = self.load_yaml(file_path)
-        self.import_cfg()
 
     def load_yaml(self, file_path):
         with open(file_path, 'r') as f:
-            return yaml.load(f, yaml.FullLoader)
+            cfg = yaml.load(f, yaml.FullLoader)
+        cfg = self.import_cfg(cfg)
+        return cfg
 
     @staticmethod
     def auto_file_ext(root_path, file_path):
@@ -41,8 +42,8 @@ class YAMLLoader(object):
         final_path_list = root_splited + sub_path_splited
         return os.path.join(*final_path_list)
 
-    def import_cfg(self):
-        import_files = self.cfg.get('import', [])
+    def import_cfg(self, curr_cfg):
+        import_files = curr_cfg.get('import', [])
         if not isinstance(import_files, list):
             import_files = [import_files]
         import_files = reversed(import_files)
@@ -52,8 +53,9 @@ class YAMLLoader(object):
             file = self.get_relative_path(self.file_path, file)
             sub_cfgs = self.load_yaml(file)
             if sub_cfgs:
-                sub_cfgs.update(self.cfg)
-                self.cfg = sub_cfgs
+                sub_cfgs.update(curr_cfg)
+                curr_cfg = sub_cfgs
+        return curr_cfg
 
     def __getitem__(self, key):
         return self.cfg[key]
