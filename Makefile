@@ -13,17 +13,6 @@ dep: $(REQUIREMENTS)
 	$(PIP) install -r $<
 
 
-commit: clean
-	# Not Recommended
-	git add -A
-	-git commit -m 'Update project'
-	git pull
-
-
-push: commit
-	git push
-
-
 install: dep
 	$(PYTHON) setup.py install
 
