@@ -28,6 +28,7 @@ class Opts(Args):
         self.try_load_registered_yml()
         self.post_config()
         self.set_attr()
+        self.reset_class_var()
 
     def try_load_registered_yml(self):
         _cfg = None

@@ -35,6 +35,12 @@ class Args(object):
         self._args = None
         self._dict = {}
 
+    @classmethod
+    def reset_class_var(cls):
+        cls.ARG_CFGS = []
+        cls.ARG_SETED = []
+        cls.CFG_POOL = CFGPool()
+
     def parse(self, args=None):
         for item in self.ARG_CFGS:
             kwargs = copy.deepcopy(item)
@@ -171,13 +177,13 @@ class Args(object):
     def add_list(cls, name, type, default=None, help=None, required=False):
         help = help or f'{name}: {type}'
         if type is int:
-            cls.arg_list_int(name=name, help=help,
+            cls.add_list_int(name=name, help=help,
                              default=default, required=required)
         elif type is float:
-            cls.arg_list_float(name=name, help=help,
+            cls.add_list_float(name=name, help=help,
                                default=default, required=required)
         elif type is str:
-            cls.arg_list_string(name=name, help=help,
+            cls.add_list_string(name=name, help=help,
                                 default=default, required=required)
         else:
             raise ValueError(f'Not support list type [{type}]')
