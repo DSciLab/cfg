@@ -1,3 +1,4 @@
+import os
 import datetime
 import inspect
 import yaml
@@ -52,6 +53,7 @@ class Opts(Args):
         return camel
 
     def post_config(self):
+        self._cfg['group'] = self.GROUP_NAME
         if 'id' not in self._cfg:
             d = datetime.datetime.now()
             date_str = d.strftime('%Y%m%d_%H%M%S')

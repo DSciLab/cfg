@@ -6,6 +6,5 @@ setup(name='cfg',
       description='Auto configuration',
       author='tor4z',
       author_email='vwenjie@hotmail.com',
-    #   url='https://www.python.org/sigs/distutils-sig/',
       packages=['cfg'],
      )
