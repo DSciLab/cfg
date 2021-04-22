@@ -28,6 +28,7 @@ class Args(object):
     ARG_CFGS = []
     ARG_SETED = []
     CFG_POOL = CFGPool()
+    PNP_PATH_LIST = []
     GROUP_NAME = None
 
     def __init__(self, description=None):
@@ -95,6 +96,10 @@ class Args(object):
     @classmethod
     def add_yml(cls, key, value, cfg_path):
         cls.CFG_POOL.regist(key, value, cfg_path)
+
+    @classmethod
+    def add_pnp(cls, cfg_path):
+        cls.PNP_PATH_LIST.append(cfg_path)
 
     @classmethod
     def add_yaml(cls, key, value, cfg_path):

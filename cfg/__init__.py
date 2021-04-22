@@ -1,4 +1,5 @@
 import datetime
+from typing_extensions import final
 import yaml
 import inspect
 from .yaml_loader import YAMLLoader
@@ -31,7 +32,30 @@ class Opts(Args):
         self.set_attr()
         self.reset_class_var()
 
+    @staticmethod
+    def fix_relative_path(path, ref_path):
+        splited_path = path.split('/')
+        splited_ref_path = ref_path.split('/')
+        final_splited_path = splited_ref_path[:-1] + splited_path
+        final_path = '/'.join(final_splited_path)
+        return final_path
+
+    def init_pnp(self):
+        for pnp_cfg_path in self.PNP_PATH_LIST:
+            pnp_cfg = YAMLLoader(pnp_cfg_path).cfg
+            for key in pnp_cfg.keys():
+                pnp_item = pnp_cfg[key]
+                assert isinstance(pnp_item, dict), \
+                    'pnp configure file fomat error'
+                for value, yaml_path in pnp_item.items():
+                    yaml_path = self.fix_relative_path(yaml_path,
+                                                       pnp_cfg_path)
+                    self.CFG_POOL.regist(key=key,
+                                         value=value,
+                                         cfg_path=yaml_path)
+
     def try_load_registered_yml(self):
+        self.init_pnp()
         _cfg = None
         for key, value in self._cfg.items():
             cfg_path = self.CFG_POOL.query(key, value)
