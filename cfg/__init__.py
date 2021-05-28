@@ -95,6 +95,12 @@ class Opts(Args):
         self._cfg[key] = value
         setattr(self, key, value)
 
+    def update(self, data: dict, override: bool=False) -> None:
+        for key, value in data.items():
+            if hasattr(self, key) and not override:
+                continue
+            self.set(key, value)
+
     def __setattr__(self, key, value):
         if hasattr(self, '_cfg') and (len(key) < 2 or key[0] != '_'):
             self._cfg[key] = value
@@ -139,3 +145,6 @@ class Opts(Args):
             string += f'{key}: {val}\n'
 
         return string
+
+    def __str__(self) -> str:
+        return self.perfect()
