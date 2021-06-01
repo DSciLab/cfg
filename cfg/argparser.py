@@ -53,6 +53,9 @@ class Args(object):
             self.ARG_SETED.append(name)
         self._args = self._parser.parse_args(args)
         self._dict = self._args.__dict__
+        # remove ArgumentParser to make 
+        # instance of this class dumpble.
+        self._parser = None
         return self
 
     @property

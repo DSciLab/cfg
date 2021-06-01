@@ -12,7 +12,7 @@ class YAMLLoader(object):
     def _load_yaml(self, file_path):
         with open(file_path, 'r') as f:
             cfg = yaml.load(f, yaml.FullLoader)
-        cfg = self.import_cfg(cfg)
+        cfg = self.import_cfg(cfg, ref_file=file_path)
         return cfg
 
     @staticmethod
@@ -43,15 +43,15 @@ class YAMLLoader(object):
         final_path_list = root_splited + sub_path_splited
         return os.path.join(*final_path_list)
 
-    def import_cfg(self, curr_cfg):
+    def import_cfg(self, curr_cfg, ref_file):
         import_files = curr_cfg.get('import', [])
         if not isinstance(import_files, list):
             import_files = [import_files]
         import_files = reversed(import_files)
 
         for file in import_files:
-            file = self.auto_file_ext(self.file_path, file)
-            file = self.get_relative_path(self.file_path, file)
+            file = self.auto_file_ext(ref_file, file)
+            file = self.get_relative_path(ref_file, file)
             sub_cfgs = self._load_yaml(file)
             if sub_cfgs:
                 sub_cfgs.update(curr_cfg)
