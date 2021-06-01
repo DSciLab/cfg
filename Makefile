@@ -6,11 +6,14 @@ PYTHON         := python
 .PHONY: all dep push install clean dist
 
 
-all: dep push install
+all: dep push install build
 
 
-dist:
+dist: clean
 	$(PYTHON) setup.py sdist
+
+
+build: dist
 
 
 dep: $(REQUIREMENTS)
@@ -22,4 +25,4 @@ install: dep
 
 
 clean:
-	-rm -rf .eggs .tox build MANIFEST
+	-rm -rf .eggs .tox build MANIFEST dist

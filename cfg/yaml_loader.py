@@ -3,12 +3,13 @@ import yaml
 
 
 class YAMLLoader(object):
-    def __init__(self, file_path):
+    def load_yml(self, file_path):
         self.file_path = file_path
         with open(file_path, 'r') as f:
-            self.cfg = self.load_yaml(file_path)
+            data = self._load_yaml(file_path)
+        return data
 
-    def load_yaml(self, file_path):
+    def _load_yaml(self, file_path):
         with open(file_path, 'r') as f:
             cfg = yaml.load(f, yaml.FullLoader)
         cfg = self.import_cfg(cfg)
@@ -56,9 +57,3 @@ class YAMLLoader(object):
                 sub_cfgs.update(curr_cfg)
                 curr_cfg = sub_cfgs
         return curr_cfg
-
-    def __getitem__(self, key):
-        return self.cfg[key]
-
-    def get(self, key, default=None):
-        return self.cfg.get(key, default)

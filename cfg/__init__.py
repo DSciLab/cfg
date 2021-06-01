@@ -2,7 +2,7 @@ import datetime
 from typing_extensions import final
 import yaml
 import inspect
-from .yaml_loader import YAMLLoader
+from .cfg_loader import CFGLoader
 from .argparser import Args
 
 
@@ -18,7 +18,7 @@ class Opts(Args):
             _parse_data = ''
         
         if cfg_file is not None:
-            self._cfg = YAMLLoader(cfg_file).cfg
+            self._cfg = CFGLoader().load_cfg(cfg_file)
         else:
             self._cfg = {}
         self.add_with_dict(self._cfg)
@@ -42,7 +42,7 @@ class Opts(Args):
 
     def init_pnp(self):
         for pnp_cfg_path in self.PNP_PATH_LIST:
-            pnp_cfg = YAMLLoader(pnp_cfg_path).cfg
+            pnp_cfg = CFGLoader().load_cfg(pnp_cfg_path)
             for key in pnp_cfg.keys():
                 pnp_item = pnp_cfg[key]
                 assert isinstance(pnp_item, dict), \
@@ -60,7 +60,7 @@ class Opts(Args):
         for key, value in self._cfg.items():
             cfg_path = self.CFG_POOL.query(key, value)
             if cfg_path is not None:
-                sub_cfg = YAMLLoader(cfg_path).cfg
+                sub_cfg = CFGLoader().load_cfg(cfg_path)
                 if _cfg is None:
                     _cfg = sub_cfg
                 else:
