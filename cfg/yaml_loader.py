@@ -52,7 +52,7 @@ class YAMLLoader(object):
         for file in import_files:
             file = self.auto_file_ext(self.file_path, file)
             file = self.get_relative_path(self.file_path, file)
-            sub_cfgs = self.load_yaml(file)
+            sub_cfgs = self._load_yaml(file)
             if sub_cfgs:
                 sub_cfgs.update(curr_cfg)
                 curr_cfg = sub_cfgs
