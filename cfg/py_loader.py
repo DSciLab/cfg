@@ -9,5 +9,5 @@ class PYLoader(object):
     def exec_py(__content: str) -> dict:
         exec(__content)
         __data = locals()
-        del __data['__content']
+        del __data['_PYLoader__content']
         return __data
