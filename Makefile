@@ -3,10 +3,10 @@ PIP            := pip
 PYTHON         := python
 
 
-.PHONY: all dep push install clean dist
+.PHONY: all dep install clean dist build
 
 
-all: dep push install build
+all: dep install
 
 
 dist: clean
@@ -25,4 +25,8 @@ install: dep
 
 
 clean:
+<<<<<<< HEAD
 	-rm -rf .eggs .tox build MANIFEST dist
+=======
+	-rm -rf dist .eggs .tox build MANIFEST
+>>>>>>> nf
