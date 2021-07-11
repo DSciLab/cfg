@@ -25,8 +25,4 @@ install: dep
 
 
 clean:
-<<<<<<< HEAD
-	-rm -rf .eggs .tox build MANIFEST dist
-=======
 	-rm -rf dist .eggs .tox build MANIFEST
->>>>>>> nf
