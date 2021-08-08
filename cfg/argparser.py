@@ -42,7 +42,7 @@ class Args(object):
         cls.ARG_SETED = []
         cls.CFG_POOL = CFGPool()
 
-    def parse(self, args=None):
+    def parse(self, args=[]):
         for item in self.ARG_CFGS:
             kwargs = copy.deepcopy(item)
             name = kwargs.pop('name')
@@ -51,7 +51,7 @@ class Args(object):
             except argparse.ArgumentError as _:
                 continue
             self.ARG_SETED.append(name)
-        self._args = self._parser.parse_args(args)
+        self._args, _ = self._parser.parse_known_args(args)
         self._dict = self._args.__dict__
         # remove ArgumentParser to make 
         # instance of this class dumpble.
