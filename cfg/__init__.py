@@ -1,5 +1,5 @@
 import datetime
-from typing_extensions import final
+import pickle
 import yaml
 import inspect
 from .cfg_loader import CFGLoader
@@ -128,6 +128,18 @@ class Opts(Args):
     def load(self, file_path, update=True):
         with open(file_path, 'r') as f:
             cfg = yaml.load(f, yaml.FullLoader)
+        self.loads(cfg, update)
+
+    def dump_pkl(self, file_path):
+        # dump as yaml file
+        file_path = f'{file_path}.pkl'
+        with open(file_path, 'wb') as f:
+            pickle.dump(self._cfg, f)
+
+    def load_pkl(self, file_path, update=True):
+        file_path = f'{file_path}.pkl'
+        with open(file_path, 'rb') as f:
+            cfg = pickle.load(f)
         self.loads(cfg, update)
 
     def loads(self, cfg, update=False):
