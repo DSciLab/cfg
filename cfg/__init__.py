@@ -48,11 +48,23 @@ class Opts(Args):
                 assert isinstance(pnp_item, dict), \
                     'pnp configure file fomat error'
                 for value, yaml_path in pnp_item.items():
-                    yaml_path = self.fix_relative_path(yaml_path,
-                                                       pnp_cfg_path)
+                    if isinstance(yaml_path, str):
+                        yaml_path_out = self.fix_relative_path(
+                            yaml_path, pnp_cfg_path
+                        )
+                        yaml_path_out = [yaml_path_out]
+                    else:
+                        yaml_path_out = []
+                        for yaml_path_ in yaml_path:
+                            yaml_path_out.append(
+                                self.fix_relative_path(
+                                    yaml_path_, pnp_cfg_path
+                                )
+                            )
+
                     self.CFG_POOL.regist(key=key,
-                                         value=value,
-                                         cfg_path=yaml_path)
+                                        value=value,
+                                        cfg_path=yaml_path_out)
 
     def try_load_registered_yml(self):
         self.init_pnp()
@@ -60,11 +72,13 @@ class Opts(Args):
         for key, value in self._cfg.items():
             cfg_path = self.CFG_POOL.query(key, value)
             if cfg_path is not None:
-                sub_cfg = CFGLoader().load_cfg(cfg_path)
-                if _cfg is None:
-                    _cfg = sub_cfg
-                else:
-                    _cfg.update(sub_cfg)
+                # cfg_path should be a list
+                for cfg_path_ in cfg_path:
+                    sub_cfg = CFGLoader().load_cfg(cfg_path_)
+                    if _cfg is None:
+                        _cfg = sub_cfg
+                    else:
+                        _cfg.update(sub_cfg)
         if _cfg is not None:
             _cfg.update(self._cfg)
             self._cfg = _cfg
